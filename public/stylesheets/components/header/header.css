@@ -1,3 +1,16 @@
 .header {
-    font-size: 14px;
+    position:fixed;
+    float:right;
+    font-size: 28px;
+    left: 0;
+    top: 0;
+    height: 7.5%;
+    background-color: rgba(189, 63, 63, 0.5);
+    width: 100%;
+    text-align: center;
+}
+.header-home {
+    position: relative;
+    float: left;
+    text-align: center;
 }

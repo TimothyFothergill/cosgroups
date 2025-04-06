@@ -1,6 +1,7 @@
 package models
 
 case class Cosgroup(
-    groupName: String,
-    users: Seq[User]
+    groupName   : String,
+    users       : Seq[User],
+    nextEvent   : String
 )
