@@ -1,8 +1,9 @@
 @()
 <link rel="stylesheet"  media="screen" href="@routes.Assets.versioned("stylesheets/components/header/header.css")">
-
 <div class="header">
-    <nav class="nav-menu">
-        <ul class="nav-item">hello</ul>
+    <a class="header-home" href="@controllers.routes.HomeController.index()"><i class="bi bi-house-fill"></i></a>
+    <nav class="navbar navbar-expand-lg">
+        <ul class="nav-item"><a href="@controllers.routes.HomeController.login()">login</a></ul>
+        <ul class="nav-item"><a href="@controllers.routes.HomeController.register()">register</a></ul>
     </nav>
 </div>

@@ -1,4 +1,10 @@
 .footer {
     position:fixed;
     font-size: smaller;
+    left: 0;
+    bottom: 0;
+    height: 5%;
+    background-color: rgba(0,0,0,0.5);
+    width: 100%;
+    text-align: center;
 }
