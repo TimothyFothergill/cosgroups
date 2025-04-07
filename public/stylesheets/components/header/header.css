@@ -4,13 +4,24 @@
     font-size: 28px;
     left: 0;
     top: 0;
-    height: 7.5%;
-    background-color: rgba(189, 63, 63, 0.5);
+    height: 4em;
+    background-color: #054FB9;
+    color: #fff;
     width: 100%;
     text-align: center;
+    padding: 1em;
+}
+.header a {
+    color: #fff;
+    text-decoration: none;
 }
 .header-home {
     position: relative;
     float: left;
+    text-align: center;
+}
+.navbar {
+    position: relative;
+    float: right;
     text-align: center;
 }

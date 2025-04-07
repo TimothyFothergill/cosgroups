@@ -12,6 +12,17 @@ case class User(
 )
 
 object User {
+    // implicit val defaultUser: User = User(
+    //     id = 0,
+    //     username = "Timlah",
+    //     firstName = "Tim",
+    //     lastName = "Fothergill",
+    //     emailAddress = "timlah@timlah.com",
+    //     password = Password("Password123!"),
+    //     cosplays = Seq(),
+    //     friends = Seq()
+    // )
+
     def isUsernameAvailable: Boolean = {
         true
     }

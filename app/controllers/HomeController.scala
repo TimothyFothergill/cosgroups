@@ -4,7 +4,8 @@ import javax.inject._
 import play.api._
 import play.api.libs.json.Json
 import play.api.mvc._
-import models.{User, Password}
+import models.{Cosplay, Cosgroup, User, Password}
+import java.util.Date
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -13,6 +14,15 @@ import models.{User, Password}
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
+  val fakeCosplay = Cosplay(
+    characterName = "Captain James Hook",
+    username = "Timlah",
+    startDate = Some(new Date(2025, 3, 6)),
+    endDate = Some(new Date(2025, 10, 1)),
+    seriesName = "Hook (1991)",
+    budget = 250.00
+  )
+
   val fakeUser = User(
     id = 1,
     username = "Timlah",
@@ -20,14 +30,22 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     lastName = "Fothergill",
     emailAddress = "timlah@timlah.com",
     password= Password("Password123!"),
-    cosplays = Seq()
+    cosplays = Seq(
+      fakeCosplay
+    )
+  )
+
+  val fakeCosgroup = Cosgroup(
+    groupName = "Butlins Krew 2025",
+    users = Seq(fakeUser),
+    nextEvent = "Butlins 2025"
   )
 
   def index() = Action { implicit request: Request[AnyContent] =>
     request.session.get("username") match {
       case Some(username) => {
         println("Logged in?")
-        Ok(views.html.index())
+        Ok(views.html.partials.dashboard(fakeUser))
       }
       case None => {
         Ok(views.html.index())        
@@ -38,7 +56,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   def register() = Action { implicit request: Request[AnyContent] =>
     request.session.get("username") match {
       case Some(username) => {
-        Ok(views.html.partials.register())
+        Ok(views.html.partials.dashboard(fakeUser))
       }
       case None => {
         Ok(views.html.partials.register())
@@ -49,7 +67,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   def login() = Action { implicit request: Request[AnyContent] =>
     request.session.get("username") match {
       case Some(username) => {
-        Ok(views.html.partials.login())
+        Ok(views.html.partials.dashboard(fakeUser))
       }
       case None => {
         Ok(views.html.partials.login())
@@ -58,26 +76,57 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   }
 
   def about () = Action { implicit request: Request[AnyContent] => 
-    request.session.get("username") match {
-      case Some(username) => {
-        Ok(views.html.about())
-      }
-      case None => {
-        Ok(views.html.about())
-      }
-    }
+    Ok(views.html.partials.about())
   }
 
   def dashboard() = Action { implicit request: Request[AnyContent] => {
-    request.session.get("username") match {
-      case Some(username) => {
+    // request.session.get("username") match {
+      // case Some(username) => {
         Ok(views.html.partials.dashboard(fakeUser))
-      }
-      case None => {
-        Ok(views.html.partials.dashboard(fakeUser))
-      }
-      }
+      // }
+      // case None => {
+        // Ok(views.html.index())
+      // }
+      // }
     }
+  }
+
+  def cosgroup() = Action { implicit request: Request[AnyContent] => {
+    // request.session.get("username") match {
+      // case Some(username) => {
+        Ok(views.html.partials.cosgroup(fakeCosgroup))
+      // }
+      // case None => {
+        // Ok(views.html.index())
+      // }
+      // }
+    }  
+  }
+
+  def cosplay(cosplay: String) = Action { implicit request: Request[AnyContent] => {
+    // request.session.get("username") match {
+      // case Some(username) => {
+        Ok(views.html.partials.cosplay(fakeCosplay))
+      // }
+      // case None => {
+        // Ok(views.html.index())
+      // }
+      // }
+    }  
+  }
+
+
+
+  def profile(user: String) = Action { implicit request: Request[AnyContent] => {
+    // request.session.get("username") match {
+      // case Some(username) => {
+        Ok(views.html.partials.profile(fakeUser))
+      // }
+      // case None => {
+        // Ok(views.html.index())
+      // }
+      // }
+    }  
   }
 
 }

@@ -1,0 +1,87 @@
+@(user: User)
+@main(user.username + "'s Profile | Cosgroups") {
+    <section>
+        <h2>@user.username</h2>
+        <div class="tab-container">
+            <button class="tab-link" onclick="openProfile()">Profile</button>
+            <button class="tab-link" onclick="openCosgroups()">Cosgroups</button>
+            <button class="tab-link" onclick="openCosplays()">Cosplays</button>
+            <button class="tab-link" onclick="openFriends()">Friends</button>
+        </div>
+        <div class="tab-content" id="profile-profile-tab">
+            tab 1
+        </div>
+        <div class="tab-content hidden" id="profile-cosgroups-tab">
+            tab 2
+        </div>
+        <div class="tab-content hidden" id="profile-cosplays-tab">
+            tab 3
+        </div>
+        <div class="tab-content hidden" id="profile-friends-tab">
+            tab 4
+        </div>
+    </section>
+}
+<script>
+    var profileTab = document.getElementById("profile-profile-tab");
+    var cosgroupsTab = document.getElementById("profile-cosgroups-tab");
+    var cosplaysTab = document.getElementById("profile-cosplays-tab");
+    var friendsTab = document.getElementById("profile-friends-tab");
+
+    function openProfile() {
+        if(profileTab.classList.contains("hidden")) {
+            profileTab.classList.remove("hidden");
+            if(!cosgroupsTab.classList.contains("hidden")) {
+                cosgroupsTab.classList.add("hidden");
+            }
+            if(!cosplaysTab.classList.contains("hidden")) {
+                cosplaysTab.classList.add("hidden");
+            }
+            if(!friendsTab.classList.contains("hidden")) {
+                friendsTab.classList.add("hidden");
+            }
+        };
+    }
+    function openCosgroups() {
+        if(cosgroupsTab.classList.contains("hidden")) {
+            cosgroupsTab.classList.remove("hidden");
+            if(!profileTab.classList.contains("hidden")) {
+                profileTab.classList.add("hidden");
+            }
+            if(!cosplaysTab.classList.contains("hidden")) {
+                cosplaysTab.classList.add("hidden");
+            }
+            if(!friendsTab.classList.contains("hidden")) {
+                friendsTab.classList.add("hidden");
+            }
+        };
+    }
+    function openCosplays() {
+        if(cosplaysTab.classList.contains("hidden")) {
+            cosplaysTab.classList.remove("hidden");
+            if(!profileTab.classList.contains("hidden")) {
+                profileTab.classList.add("hidden");
+            }
+            if(!cosgroupsTab.classList.contains("hidden")) {
+                cosgroupsTab.classList.add("hidden");
+            }
+            if(!friendsTab.classList.contains("hidden")) {
+                friendsTab.classList.add("hidden");
+            }
+        };
+    }
+    function openFriends() {
+        if(friendsTab.classList.contains("hidden")) {
+            friendsTab.classList.remove("hidden");
+            if(!profileTab.classList.contains("hidden")) {
+                profileTab.classList.add("hidden");
+            }
+            if(!cosgroupsTab.classList.contains("hidden")) {
+                cosgroupsTab.classList.add("hidden");
+            }
+            if(!cosplaysTab.classList.contains("hidden")) {
+                cosplaysTab.classList.add("hidden");
+            }
+        };
+    }
+</script>
