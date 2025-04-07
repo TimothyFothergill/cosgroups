@@ -1,0 +1,54 @@
+@(cosgroup: Cosgroup)
+
+@main(cosgroup.groupName + " | Cosgroups") {
+    <section>
+        <h2>@cosgroup.groupName</h2>
+        <p>Cosgroup made up of: @for(user <- cosgroup.users){<a href="@controllers.routes.HomeController.profile(user.username)">@user.username</a> ,}</p>
+        <div id="@{cosgroup.groupName}-table">
+            <!-- This will be where we add each cosgroup member as a table element -->
+            <table style="border: 2px solid black;">
+                <thead style="border: 2px solid black; padding:1em;">
+                    <th scope="col" style="width: 200px;">
+                        
+                    </th>
+                    <th scope="col" style="width: 200px;">
+                        Character
+                    </th>
+                    <th scope="col" style="width: 200px;">
+                        Budget
+                    </th>
+                    <th scope="col" style="width: 200px;">
+                        Progress
+                    </th>
+                </thead>
+                <tbody>
+                    @for(user <- cosgroup.users) {
+                        <tr>
+                            <td style="border: 2px solid black; padding:1em;">
+                                @user.cosplays.head.icon match {
+                                    case Some(icon) => {
+                                        @user.cosplays.head.icon
+                                    }
+                                    case None => {}
+                                }
+                            </td>
+                            <td style="border: 2px solid black; padding:1em;">
+                                @user.cosplays.head.characterName <br \>
+                                @user.cosplays.head.seriesName
+                            </td>
+                            <td style="border: 2px solid black; padding:1em;">
+                                £@user.cosplays.head.budget
+                            </td>
+                            <td>
+                                <progress value="@user.cosplays.head.progress" max="100"> @{user.cosplays.head.progress}% </progress>
+                            </td>
+                        </tr>                        
+                    }
+                </tbody>
+             </table>
+        </div>
+        <div id="@{cosgroup.groupName}-feed">
+
+        </div>
+    </section>
+}

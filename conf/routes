@@ -4,11 +4,19 @@
 # ~~~~
 
 # An example controller showing a sample home page
+
+# no login needed routes
 GET     /                           controllers.HomeController.index()
+GET     /login                      controllers.HomeController.login()
 GET     /register                   controllers.HomeController.register()
-GET     /dashboard                  controllers.HomeController.dashboard()
 GET     /about                      controllers.HomeController.about()
 
-GET     /login                      controllers.HomeController.login()
+# login needed routes
+GET     /dashboard                  controllers.HomeController.dashboard()
+GET     /cosgroup                   controllers.HomeController.cosgroup()
+
+GET     /cosplay/:cosplay           controllers.HomeController.cosplay(cosplay)
+GET     /profile/:username          controllers.HomeController.profile(username)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
