@@ -1,0 +1,38 @@
+* {
+    box-sizing: inherit;
+}
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+body {
+    height: 100%;
+    font-size: 18px;
+    font-family: "Nunito", sans-serif;
+}
+#page-container {
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+h1 {
+    color: blue;
+}
+h2 {
+    color: green;
+}
+h3 {
+    color: orangered;
+}
+h4 {
+    color: purple;
+}
+h5 {
+    color: teal;
+}
+
+.content {
+    padding: 2.5% 2.5%;
+    margin: 1% 1%;
+    border: 2px black solid;
+}

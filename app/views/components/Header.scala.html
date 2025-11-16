@@ -1,0 +1,14 @@
+@()
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/components/header/header.css")">
+<div class="header">
+    <div class="logo">
+        <p>Cosgroups</p>
+    </div>
+    <div class="header-nav-list">
+        <a class="active" href="@routes.MainController.index()">Home</a>
+        <a href="@routes.MainController.about()">About</a>
+    </div>
+    <div class="header-authentication-container">
+        <a href="@routes.MainController.login()">Login</a>
+    </div>
+</div>

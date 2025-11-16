@@ -1,0 +1,10 @@
+@import play.api.i18n.Messages.implicitMessagesProviderToMessages
+
+@(user: User)(implicit request: MessagesRequestHeader)
+
+@import helper.*
+
+@Main("My Profile | Cosgroups") {
+    <h1>My Profile</h1>
+    <h2>@user.username</h2>
+}

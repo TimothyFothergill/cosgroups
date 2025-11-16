@@ -1,0 +1,51 @@
+@import play.api.data.*
+@import play.api.data.Forms.*
+@import play.api.i18n.Messages.implicitMessagesProviderToMessages
+
+@(registrationForm: Form[_])(implicit request: MessagesRequestHeader)
+
+@import helper.*
+
+@Main("Register | Cosgroups") {
+    <h1>Register to Cosgroups</h1>
+    @form(action = routes.MainController.registerPost()) {
+        @CSRF.formField
+        @registrationForm("username").hasErrors match {
+            case true => {
+                @Error("username")
+                @inputText(registrationForm("username"))
+            }
+            case _ => {
+                @inputText(registrationForm("username"))
+            }
+        }
+        @registrationForm("email").hasErrors match {
+            case true => {
+                @Error("email")
+                @inputText(registrationForm("email"))
+            }
+            case _ => {
+                @inputText(registrationForm("email"))
+            }
+        }
+        @registrationForm("password").hasErrors match {
+            case true => {
+                @Error("password")
+                @inputText(registrationForm("password"))
+            }
+            case _ => {
+                @inputText(registrationForm("password"))
+            }
+        }
+        @registrationForm("confirmPassword").hasErrors match {
+            case true => {
+                @Error("confirmPassword")
+                @inputText(registrationForm("confirmPassword"))
+            }
+            case _ => {
+                @inputText(registrationForm("confirmPassword"))
+            }
+        }
+        <button type="submit">Submit</button>
+    }
+}

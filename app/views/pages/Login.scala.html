@@ -1,0 +1,33 @@
+@import play.api.data.*
+@import play.api.data.Forms.*
+@import play.api.i18n.Messages.implicitMessagesProviderToMessages
+
+@(loginForm: Form[_])(implicit request: MessagesRequestHeader)
+
+@import helper.*
+
+@Main("Login | Cosgroups") {
+    <h1>Login to Cosgroups</h1>
+    @form(action = routes.MainController.loginPost()) {
+        @CSRF.formField
+        @loginForm("username").hasErrors match {
+            case true => {
+                @Error("username")
+                @inputText(loginForm("username"))
+            }
+            case _ => {
+                @inputText(loginForm("username"))
+            }
+        }
+        @loginForm("password").hasErrors match {
+            case true => {
+                @Error("password")
+                @inputText(loginForm("password"))
+            }
+            case _ => {
+                @inputText(loginForm("password"))
+            }
+        }
+        <button type="submit">Submit</button>
+    }
+}

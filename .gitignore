@@ -1,0 +1,15 @@
+logs
+target
+/.bsp
+/.idea
+/.idea_modules
+/.classpath
+/.project
+/.settings
+/RUNNING_PID
+.bloop/
+.metals/
+.vscode/
+project/.bloop/
+project/project/
+run.ps1
