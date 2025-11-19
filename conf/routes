@@ -10,6 +10,9 @@ GET     /logout                     controllers.MainController.logout()
 GET     /register                   controllers.MainController.register()
 GET     /about                      controllers.MainController.about()
 
+GET     /dashboard                  controllers.MainController.dashboard()
+
+# These are temporary testing routes
 GET     /logged-in                  controllers.MainController.loggedInPage()
 GET     /user1                      controllers.MainController.findUserPage()
 GET     /updateuser                 controllers.MainController.updateUserPage()

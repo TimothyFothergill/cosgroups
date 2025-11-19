@@ -1,8 +1,7 @@
 @import play.api.data.*
 @import play.api.data.Forms.*
-@import play.api.i18n.Messages.implicitMessagesProviderToMessages
 
-@(cosplayForm: Form[_])(implicit request: MessagesRequestHeader)
+@(cosplayForm: Form[_])(implicit request: MessagesRequest[_])
 
 @import helper.*
 

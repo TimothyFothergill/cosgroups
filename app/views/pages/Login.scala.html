@@ -1,8 +1,7 @@
 @import play.api.data.*
 @import play.api.data.Forms.*
-@import play.api.i18n.Messages.implicitMessagesProviderToMessages
 
-@(loginForm: Form[_])(implicit request: MessagesRequestHeader)
+@(loginForm: Form[_])(implicit request: MessagesRequest[_])
 
 @import helper.*
 
@@ -22,12 +21,13 @@
         @loginForm("password").hasErrors match {
             case true => {
                 @Error("password")
-                @inputText(loginForm("password"))
+                @inputPassword(loginForm("password"))
             }
             case _ => {
-                @inputText(loginForm("password"))
+                @inputPassword(loginForm("password"))
             }
         }
+        <a href="@routes.MainController.register()"><p>Don't have an account? Register today!</p></a>
         <button type="submit">Submit</button>
     }
 }

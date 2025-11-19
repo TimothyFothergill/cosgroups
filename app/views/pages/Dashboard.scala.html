@@ -1,12 +1,14 @@
-@import play.api.data.*
-@import play.api.data.Forms.*
-@import play.api.i18n.Messages.implicitMessagesProviderToMessages
+@import play.api.mvc.MessagesRequest
+@import models.User
 
-@(registrationForm: Form[_])(implicit request: MessagesRequestHeader)
-
-@import helper.*
+@(user: User)(implicit request: MessagesRequest[_])
 
 @Main("Dashboard | Cosgroups") {
-    <h1>Dashboard</h1>
-
+    <h1>@{user.username}'s Dashboard</h1>
+    <a href="@routes.MainController.index()"><p>Create new Cosgroup</p></a>
+    <a href="@routes.MainController.index()"><p>Create new Cosplay</p></a>
+    <hr>
+    <a href="@routes.MainController.index()"><p>View Cosgroups</p></a>
+    <a href="@routes.MainController.index()"><p>View Events</p></a>
+    <hr>
 }
