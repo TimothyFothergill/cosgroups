@@ -10,6 +10,9 @@ body {
     font-size: 18px;
     font-family: "Nunito", sans-serif;
 }
+.page-body {
+    min-height: 100vh;
+}
 #page-container {
     min-height: 100%;
     display: grid;

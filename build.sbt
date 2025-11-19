@@ -8,6 +8,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 scalaVersion := "3.3.7"
 
 libraryDependencies += guice
+libraryDependencies += caffeine // cache
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.2" % Test
 libraryDependencies += "org.mindrot" % "jbcrypt" % "0.4"
 libraryDependencies ++= Seq(

@@ -13,19 +13,22 @@ import services.UsersRepositoryService
 
 import java.time.LocalDate
 import scala.concurrent.Future
+import play.api.i18n.{Messages, MessagesProvider}
 
 @Singleton
 class MainController @Inject(
     cc: MessagesControllerComponents,
     userAction: UserAction,
     usersRepositoryService: UsersRepositoryService
-)(implicit executionContext: ExecutionContext) extends MessagesAbstractController(cc) {
+)(implicit executionContext: ExecutionContext) 
+  extends MessagesAbstractController(cc)
+    with play.api.i18n.I18nSupport {
 
-  def index() = Action { implicit request: Request[AnyContent] =>
+  def index() = Action { implicit request: MessagesRequest[AnyContent] =>
     Ok(views.html.pages.Index())
   }
 
-  def about() = Action { implicit request: Request[AnyContent] =>
+  def about() = Action { implicit request: MessagesRequest[AnyContent] =>
     Ok(views.html.pages.About())
   }
 
@@ -43,7 +46,7 @@ class MainController @Inject(
       loginData => {
         val maybeUser = User.checkCredentials(loginData.username, loginData.password)
         if(maybeUser.nonEmpty) {
-          Redirect(routes.MainController.index())
+          Redirect(routes.MainController.dashboard())
             .withSession(
               request.session + ("username" -> loginData.username)
             )
@@ -54,7 +57,33 @@ class MainController @Inject(
     )
   }
 
+  def dashboard() = Action.async { implicit request: MessagesRequest[AnyContent] =>
+    request.session.get("username") match {
+      case Some(name) => {
+        val repositoryUser = usersRepositoryService.returnUserByUsername(name)
+        repositoryUser.map { currentUser =>
+          val userObject: User = User(
+            currentUser.get.id,
+            currentUser.get.username,
+            currentUser.get.email,
+            Password(currentUser.get.password),
+            currentUser.get.isAdmin,
+            currentUser.get.biography,
+            currentUser.get.dateOfBirth,
+            currentUser.get.registrationDate,
+            Seq()
+          )
+          Ok(views.html.pages.Dashboard(userObject))()
+        }
+      }
+      case None => {
+        Future.successful(Redirect(routes.MainController.login()))
+      }
+    }
+  }
+
   def loggedInPage() = userAction.async { implicit request: UserRequest[AnyContent] => 
+    implicit val messages: Messages = messagesApi.preferred(request)
     request.username match {
       case Some(name) => {
         usersRepositoryService.returnAllUsers().map { users =>
@@ -68,6 +97,7 @@ class MainController @Inject(
   }
 
   def findUserPage() = userAction.async { implicit request: UserRequest[AnyContent] => 
+    implicit val messages: Messages = messagesApi.preferred(request)
     request.username match {
       case Some(name) => {
         usersRepositoryService.returnUserByUsername("timlahthesecond").map { user =>
@@ -81,6 +111,7 @@ class MainController @Inject(
   }
 
   def updateUserPage() = userAction.async { implicit request: UserRequest[AnyContent] => 
+    implicit val messages: Messages = messagesApi.preferred(request)
     request.username match {
       case Some(name) => {
         usersRepositoryService.returnUserByUsername("timlahthesecond").map { user =>
@@ -107,6 +138,7 @@ class MainController @Inject(
   }
 
   def dropUserPage() = userAction.async { implicit request: UserRequest[AnyContent] => 
+    implicit val messages: Messages = messagesApi.preferred(request)
     request.username match {
       case Some(name) => {
         usersRepositoryService.returnUserById(3).map { userToDrop =>

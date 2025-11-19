@@ -1,8 +1,7 @@
 @import play.api.data.*
 @import play.api.data.Forms.*
-@import play.api.i18n.Messages.implicitMessagesProviderToMessages
 
-@(registrationForm: Form[_])(implicit request: MessagesRequestHeader)
+@(registrationForm: Form[_])(implicit request: MessagesRequest[_])
 
 @import helper.*
 
@@ -31,21 +30,22 @@
         @registrationForm("password").hasErrors match {
             case true => {
                 @Error("password")
-                @inputText(registrationForm("password"))
+                @inputPassword(registrationForm("password"))
             }
             case _ => {
-                @inputText(registrationForm("password"))
+                @inputPassword(registrationForm("password"))
             }
         }
         @registrationForm("confirmPassword").hasErrors match {
             case true => {
                 @Error("confirmPassword")
-                @inputText(registrationForm("confirmPassword"))
+                @inputPassword(registrationForm("confirmPassword"))
             }
             case _ => {
-                @inputText(registrationForm("confirmPassword"))
+                @inputPassword(registrationForm("confirmPassword"))
             }
         }
         <button type="submit">Submit</button>
+        <a href="@routes.MainController.login()"><p>Already have an account? Click here to sign in</p></a>
     }
 }

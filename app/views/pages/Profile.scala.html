@@ -1,6 +1,5 @@
-@import play.api.i18n.Messages.implicitMessagesProviderToMessages
 
-@(user: User)(implicit request: MessagesRequestHeader)
+@(user: User)(implicit request: MessagesRequest[_])
 
 @import helper.*
 
