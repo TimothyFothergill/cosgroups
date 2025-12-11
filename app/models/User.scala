@@ -11,8 +11,7 @@ case class User(
     isAdmin: Boolean = false,
     biography: Option[String] = None,
     dateOfBirth: Option[LocalDate] = None,
-    registrationDate: LocalDate = LocalDate.now(),
-    cosplays: Seq[Cosplay] = Seq()
+    registrationDate: LocalDate = LocalDate.now()
 )
 
 object User {
@@ -32,7 +31,7 @@ object User {
     def lookupUserByUsername(username: String): Option[User] = {
         if(username == "timlah") {
             val storedPassword: Password = Password.createPassword("Password123!")
-            Some(User(1,"timlah","timlah@timlah.com",storedPassword,true,None,None,LocalDate.now(),Seq()))
+            Some(User(1,"timlah","timlah@timlah.com",storedPassword,true,None,None,LocalDate.now()))
         } else {
             None
         }

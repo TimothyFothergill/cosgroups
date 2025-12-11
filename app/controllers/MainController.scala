@@ -70,8 +70,7 @@ class MainController @Inject(
             currentUser.get.isAdmin,
             currentUser.get.biography,
             currentUser.get.dateOfBirth,
-            currentUser.get.registrationDate,
-            Seq()
+            currentUser.get.registrationDate
           )
           Ok(views.html.pages.Dashboard(userObject))()
         }
@@ -158,6 +157,39 @@ class MainController @Inject(
   }
 
   def registerPost() = Action.async { implicit request: MessagesRequest[AnyContent] =>
+    val boundForm = RegistrationForm.registrationForm.bindFromRequest()
+    boundForm.fold(
+      formWithErrors => {
+        Future.successful(BadRequest(views.html.pages.Register(formWithErrors)))
+      },
+      registrationData => {
+        val doesUserExist = User.lookupUserByUsername(registrationData.username)
+        if(doesUserExist.nonEmpty) {
+          Future.successful(Redirect(routes.MainController.register()))
+        } else {
+          val passwordObj: Password = Password.createPassword(registrationData.password)
+          val newUser = UsersRepositoryInsertModel(
+            username          = registrationData.username, 
+            email             = registrationData.email, 
+            password          = passwordObj.hashedPassword,
+            isAdmin           = false,
+            biography         = None,
+            dateOfBirth       = None,
+            registrationDate  = LocalDate.now()
+          )
+          usersRepositoryService.addNewUser(newUser)
+          Future.successful(Redirect(routes.MainController.index()))
+        }
+      }
+    )
+  }
+
+  def newCosplay() = Action { implicit request: MessagesRequest[AnyContent] =>
+    val boundForm = CosplayForm.cosplayForm
+    Ok(views.html.pages.Login(boundForm))
+  }
+
+  def newCosplayPost() = Action.async { implicit request: MessagesRequest[AnyContent] => 
     val boundForm = RegistrationForm.registrationForm.bindFromRequest()
     boundForm.fold(
       formWithErrors => {

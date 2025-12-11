@@ -7,6 +7,26 @@
 
 @Main("New Cosplay | Cosgroups") {
     <h1>New Cosplay</h1>
-    @* This whole file needs to be rewritten for a new cosplay form *@
-
+    @form(action = routes.MainController.newCosplayPost()) {
+        @CSRF.formField
+        @cosplayForm("characterName").hasErrors match {
+            case true => {
+                @Error("characterName")
+                @inputText(cosplayForm("characterName"))
+            }
+            case _ => {
+                @inputText(cosplayForm("characterName"))
+            }
+        }
+        @cosplayForm("seriesName").hasErrors match {
+            case true => {
+                @Error("characterName")
+                @inputText(cosplayForm("seriesName"))
+            }
+            case _ => {
+                @inputText(cosplayForm("seriesName"))
+            }
+        }
+        <button type="submit">Create</button>
+    }
 }
