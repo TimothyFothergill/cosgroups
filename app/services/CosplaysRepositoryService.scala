@@ -76,7 +76,7 @@ class CosplaysRepositoryService @Inject(
         db.run(query)
     }
 
-    def dropUser(id: Long): Future[Int] = {
+    def dropCosplay(id: Long): Future[Int] = {
         val query = 
             cosplaysTable.filter(_.id === id).delete
         db.run(query)

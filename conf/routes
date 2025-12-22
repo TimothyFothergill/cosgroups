@@ -21,7 +21,7 @@ GET     /dropuser                   controllers.MainController.dropUserPage()
 POST    /login                      controllers.MainController.loginPost()
 POST    /register                   controllers.MainController.registerPost()
 
-GET     /new-cosplay-post           controllers.MainController.newCosplayPost()
+GET     /new-cosplay-post           controllers.MainController.newCosplay()
 POST    /submit-new-cosplay-post    controllers.MainController.newCosplayPost()
 
 # Map static resources from the /public folder to the /assets URL path

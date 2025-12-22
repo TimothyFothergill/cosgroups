@@ -1,7 +1,7 @@
 @import play.api.data.*
 @import play.api.data.Forms.*
 
-@(cosplayForm: Form[_])(implicit request: MessagesRequest[_])
+@(cosplayForm: Form[_])(implicit request: Request[_], messages: MessagesProvider)
 
 @import helper.*
 
@@ -21,10 +21,55 @@
         @cosplayForm("seriesName").hasErrors match {
             case true => {
                 @Error("characterName")
-                @inputText(cosplayForm("seriesName"))
+                @inputText(cosplayForm("seriesName"), Symbol("id") -> "Series Name")
             }
             case _ => {
-                @inputText(cosplayForm("seriesName"))
+                @inputText(cosplayForm("seriesName"), Symbol("id") -> "Series Name")
+            }
+        }
+        @cosplayForm("started").hasErrors match {
+            case true => {
+                @Error("started")
+                @inputDate(cosplayForm("started"))
+            }
+            case _ => {
+                @inputDate(cosplayForm("started"))
+            }
+        }
+        @cosplayForm("status").hasErrors match {
+            case true => {
+                @Error("status")
+                @inputText(cosplayForm("status")) @* need to figure what we want status to be, or remove *@
+            }
+            case _ => {
+                @inputText(cosplayForm("status")) @* need to figure what we want status to be, or remove *@
+            }
+        }
+        @cosplayForm("completed").hasErrors match {
+            case true => {
+                @Error("completed")
+                @inputDate(cosplayForm("completed"))
+            }
+            case _ => {
+                @inputDate(cosplayForm("completed"))
+            }
+        }
+        @cosplayForm("archived").hasErrors match {
+            case true => {
+                @Error("archived")
+                @inputDate(cosplayForm("archived"))
+            }
+            case _ => {
+                @inputDate(cosplayForm("archived"))
+            }
+        }
+        @cosplayForm("description").hasErrors match {
+            case true => {
+                @Error("description")
+                @textarea(cosplayForm("description"), Symbol("id") -> "Description")
+            }
+            case _ => {
+                @textarea(cosplayForm("description"), Symbol("id") -> "Description")
             }
         }
         <button type="submit">Create</button>

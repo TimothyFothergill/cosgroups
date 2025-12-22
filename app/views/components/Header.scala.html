@@ -1,4 +1,4 @@
-@()(implicit request: MessagesRequest[_])
+@()(implicit request: play.api.mvc.RequestHeader, messages: play.api.i18n.MessagesProvider)
 <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/components/header/header.css")">
 <div class="header">
     <div class="logo">
@@ -11,6 +11,7 @@
     <div class="header-authentication-container">
         @request.session.get("username") match {
             case Some(name) => {
+                <a href="@routes.MainController.dashboard()">Hello, @request.session.get("username").get.toString()!</a>
                 <a href="@routes.MainController.logout()">Logout</a>
             }
             case None => {

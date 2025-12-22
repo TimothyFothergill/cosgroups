@@ -5,6 +5,7 @@ import java.time.LocalDate
 import java.util.Date
 
 import utility.CurrencyFormat.*
+import utility.DateFormats.*
 
 import play.api.libs.json._
 
@@ -30,4 +31,28 @@ case class MaterialForm(
   isPurchased: Boolean,
   purchaseCost: Option[Currency],
   purchaseDate: Option[Date]
-)
+) {
+  def toMaterial: Material =
+    Material(
+      materialName = materialName,
+      quantityNeeded = quantityNeeded,
+      expectedMaterialCost = expectedMaterialCost,
+      isPurchased = isPurchased,
+      purchaseCost = purchaseCost,
+      purchaseDate = purchaseDate
+    )
+}
+
+object MaterialForm {
+  implicit def materialFormToMaterial(materialForm: MaterialForm): Material =
+    Material(
+      materialName = materialForm.materialName,
+      quantityNeeded = materialForm.quantityNeeded,
+      expectedMaterialCost = materialForm.expectedMaterialCost,
+      isPurchased = materialForm.isPurchased,
+      purchaseCost = materialForm.purchaseCost,
+      purchaseDate = materialForm.purchaseDate
+    )
+
+    
+}
