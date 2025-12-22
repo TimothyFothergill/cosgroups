@@ -9,17 +9,22 @@ import actions.*
 import models.{Password,User}
 import models.forms.*
 import repositories.*
-import services.UsersRepositoryService
+import services.{CosplaysRepositoryService, UsersService, UsersRepositoryService}
 
 import java.time.LocalDate
 import scala.concurrent.Future
 import play.api.i18n.{Messages, MessagesProvider}
 
+import utility.DateFormats.*
+import services.UsersService
+
 @Singleton
 class MainController @Inject(
     cc: MessagesControllerComponents,
     userAction: UserAction,
-    usersRepositoryService: UsersRepositoryService
+    usersService: UsersService,
+    usersRepositoryService: UsersRepositoryService,
+    cosplaysRepositoryService: CosplaysRepositoryService
 )(implicit executionContext: ExecutionContext) 
   extends MessagesAbstractController(cc)
     with play.api.i18n.I18nSupport {
@@ -37,21 +42,18 @@ class MainController @Inject(
     Ok(views.html.pages.Login(boundForm))
   }
 
-  def loginPost() = Action { implicit request: MessagesRequest[AnyContent] =>
+  def loginPost() = Action.async { implicit request: MessagesRequest[AnyContent] =>
     val boundForm = LoginForm.loginForm.bindFromRequest()
     boundForm.fold(
-      formWithErrors => {
-        BadRequest(views.html.pages.Login(formWithErrors))
-      },
+      formWithErrors => Future.successful(BadRequest(views.html.pages.Login(formWithErrors))),
       loginData => {
-        val maybeUser = User.checkCredentials(loginData.username, loginData.password)
-        if(maybeUser.nonEmpty) {
-          Redirect(routes.MainController.dashboard())
-            .withSession(
-              request.session + ("username" -> loginData.username)
-            )
-        } else {
-          Redirect(routes.MainController.login())
+        val maybeUser = usersService.checkCredentials(loginData.username, loginData.password)
+        maybeUser.map {
+          case Some(_) =>
+            Redirect(routes.MainController.dashboard())
+              .withSession(request.session + ("username" -> loginData.username))
+          case None =>
+            Redirect(routes.MainController.login())
         }
       }
     )
@@ -70,8 +72,7 @@ class MainController @Inject(
             currentUser.get.isAdmin,
             currentUser.get.biography,
             currentUser.get.dateOfBirth,
-            currentUser.get.registrationDate,
-            Seq()
+            currentUser.get.registrationDate
           )
           Ok(views.html.pages.Dashboard(userObject))()
         }
@@ -114,7 +115,7 @@ class MainController @Inject(
     implicit val messages: Messages = messagesApi.preferred(request)
     request.username match {
       case Some(name) => {
-        usersRepositoryService.returnUserByUsername("timlahthesecond").map { user =>
+        usersRepositoryService.returnUserByUsername(name).map { user =>
           val currentUser = user.get
           val updatedUser: UsersRepositoryModel = UsersRepositoryModel(
             currentUser.id,
@@ -164,25 +165,65 @@ class MainController @Inject(
         Future.successful(BadRequest(views.html.pages.Register(formWithErrors)))
       },
       registrationData => {
-        val doesUserExist = User.lookupUserByUsername(registrationData.username)
-        if(doesUserExist.nonEmpty) {
-          Future.successful(Redirect(routes.MainController.register()))
-        } else {
-          val passwordObj: Password = Password.createPassword(registrationData.password)
-          val newUser = UsersRepositoryInsertModel(
-            username          = registrationData.username, 
-            email             = registrationData.email, 
-            password          = passwordObj.hashedPassword,
-            isAdmin           = false,
-            biography         = None,
-            dateOfBirth       = None,
-            registrationDate  = LocalDate.now()
-          )
-          usersRepositoryService.addNewUser(newUser)
-          Future.successful(Redirect(routes.MainController.index()))
+        usersService.lookupUserByUsername(registrationData.username).flatMap {
+          case Some(_) =>
+            Future.successful(Redirect(routes.MainController.register()))
+          case None =>
+            val passwordObj: Password = Password.createPassword(registrationData.password)
+            val newUser = UsersRepositoryInsertModel(
+              username          = registrationData.username,
+              email             = registrationData.email,
+              password          = passwordObj.hashedPassword,
+              isAdmin           = false,
+              biography         = None,
+              dateOfBirth       = None,
+              registrationDate  = LocalDate.now()
+            )
+            usersRepositoryService.addNewUser(newUser).map { _ =>
+              Redirect(routes.MainController.index())
+            }
         }
       }
     )
+  }
+
+  def newCosplay() = Action { implicit request: MessagesRequest[AnyContent] =>
+    val boundForm = CosplayForm.cosplayForm
+    Ok(views.html.pages.NewCosplay(boundForm))
+  }
+
+  def newCosplayPost() = userAction.async { implicit request: UserRequest[AnyContent] => 
+    request.username match {
+      case Some(name) => {
+        val repositoryUser = usersRepositoryService.returnUserByUsername(name)
+        val boundForm = CosplayForm.cosplayForm.bindFromRequest()
+        boundForm.fold(
+          formWithErrors => {
+            Future.successful(BadRequest(views.html.pages.NewCosplay(formWithErrors)))
+          },
+          newCosplayData => {
+            usersRepositoryService.returnUserByUsername(name).map { user =>
+              val currentUser = user.get
+                val newCosplayInsertModel = CosplaysRepositoryInsertModel(
+                  characterName = newCosplayData.characterName,
+                  cosplayer = currentUser.id,
+                  seriesName = Some(newCosplayData.seriesName),
+                  started = newCosplayData.started,
+                  completed = newCosplayData.completed,
+                  description = newCosplayData.description,
+                  budget = newCosplayData.budget,
+                  cosplayComponents = newCosplayData.cosplayComponents.map(_.toCosplayComponent)
+                )
+                cosplaysRepositoryService.addNewCosplay(newCosplayInsertModel)
+                Redirect(routes.MainController.dashboard())
+              }
+            }
+        )
+      }
+      case None => {
+        Future.successful(Redirect(routes.MainController.login()))
+      }
+    }
   }
 
   def logout() = Action {
