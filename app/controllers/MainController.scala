@@ -9,7 +9,7 @@ import actions.*
 import models.{Password,User}
 import models.forms.*
 import repositories.*
-import services.{CosplaysRepositoryService, UsersService, UsersRepositoryService}
+import services.{CosgroupsRepositoryService, CosplaysRepositoryService, UsersService, UsersRepositoryService}
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -24,7 +24,8 @@ class MainController @Inject(
     userAction: UserAction,
     usersService: UsersService,
     usersRepositoryService: UsersRepositoryService,
-    cosplaysRepositoryService: CosplaysRepositoryService
+    cosgroupsRepositoryService: CosgroupsRepositoryService,
+    cosplaysRepositoryService: CosplaysRepositoryService,
 )(implicit executionContext: ExecutionContext) 
   extends MessagesAbstractController(cc)
     with play.api.i18n.I18nSupport {
@@ -195,7 +196,6 @@ class MainController @Inject(
   def newCosplayPost() = userAction.async { implicit request: UserRequest[AnyContent] => 
     request.username match {
       case Some(name) => {
-        val repositoryUser = usersRepositoryService.returnUserByUsername(name)
         val boundForm = CosplayForm.cosplayForm.bindFromRequest()
         boundForm.fold(
           formWithErrors => {
@@ -215,6 +215,48 @@ class MainController @Inject(
                   cosplayComponents = newCosplayData.cosplayComponents.map(_.toCosplayComponent)
                 )
                 cosplaysRepositoryService.addNewCosplay(newCosplayInsertModel)
+                Redirect(routes.MainController.dashboard())
+              }
+            }
+        )
+      }
+      case None => {
+        Future.successful(Redirect(routes.MainController.login()))
+      }
+    }
+  }
+
+  def newCosgroup() = Action { implicit request: MessagesRequest[AnyContent] =>
+    val boundForm = CosgroupForm.cosgroupForm
+    Ok(views.html.pages.NewCosgroup(boundForm))
+  }
+
+  def newCosgroupPost() = userAction.async { implicit request: UserRequest[AnyContent] => 
+    request.username match {
+      case Some(name) => {
+        val boundForm = CosgroupForm.cosgroupForm.bindFromRequest()
+        println(boundForm)
+        boundForm.fold(
+          formWithErrors => {
+            println("Bad request.")
+            Future.successful(BadRequest(views.html.pages.NewCosgroup(formWithErrors)))
+          },
+          newCosgroupData => {
+            println("Successfully submitted cosgroup data...")
+            usersRepositoryService.returnUserByUsername(name).map { user =>
+              val currentUser = user.get
+                val newCosgroupInsertModel = CosgroupsRepositoryInsertModel(
+                  name             = newCosgroupData.name,
+                  created          = newCosgroupData.created,
+                  archived         = newCosgroupData.archived,
+                  description      = newCosgroupData.description,
+                  admin            = currentUser.id,
+                  members          = Seq(currentUser.id),
+                  nextEvents       = Seq(),
+                  previousEvents   = Seq()
+                )
+                println(newCosgroupInsertModel)
+                cosgroupsRepositoryService.addNewCosgroup(newCosgroupInsertModel)
                 Redirect(routes.MainController.dashboard())
               }
             }
