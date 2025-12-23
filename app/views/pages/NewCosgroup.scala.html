@@ -1,11 +1,50 @@
 @import play.api.data.*
 @import play.api.data.Forms.*
 
-@(cosgroupForm: Form[_])(implicit request: MessagesRequest[_])
+@(cosgroupForm: Form[_])(implicit request: Request[_], messages: MessagesProvider)
 
 @import helper.*
 
 @Main("New Cosgroup | Cosgroups") {
     <h1>New Cosgroup</h1>
-
+    @form(action = routes.MainController.newCosgroupPost()) {
+        @CSRF.formField
+        @cosgroupForm("name").hasErrors match {
+            case true => {
+                @Error("name")
+                @inputText(cosgroupForm("name"))
+            }
+            case _ => {
+                @inputText(cosgroupForm("name"))
+            }
+        }
+        @cosgroupForm("created").hasErrors match {
+            case true => {
+                @Error("created")
+                @inputDate(cosgroupForm("created"))
+            }
+            case _ => {
+                @inputDate(cosgroupForm("created"))
+            }
+        }
+        @cosgroupForm("archived").hasErrors match {
+            case true => {
+                @Error("archived")
+                @inputDate(cosgroupForm("archived"))
+            }
+            case _ => {
+                @inputDate(cosgroupForm("archived"))
+            }
+        }
+        @cosgroupForm("description").hasErrors match {
+            case true => {
+                @Error("description")
+                @textarea(cosgroupForm("description"), Symbol("id") -> "Description")
+            }
+            case _ => {
+                @textarea(cosgroupForm("description"), Symbol("id") -> "Description")
+            }
+        }
+        <button type="submit">Create</button>
+    }
 }
