@@ -1,0 +1,18 @@
+@import play.api.data.*
+@import play.api.data.Forms.*
+
+@(user: User)(implicit request: Request[_], messages: MessagesProvider)
+
+@import helper.*
+
+@Main("My Cosplays | Cosgroups") {
+    <h1>@{user.username}'s Cosplays</h1>
+    <div class="user-cosplays">
+        @{user.cosplays.map { cosplay =>
+            <div class="user-cosplays-character">
+                <h2>{cosplay.characterName}</h2>
+                <p>other cosplay info...</p>
+            </div>
+        }}
+    </div>
+}

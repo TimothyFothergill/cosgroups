@@ -23,6 +23,7 @@ POST    /register                   controllers.MainController.registerPost()
 
 GET     /new-cosplay                controllers.MainController.newCosplay()
 POST    /submit-new-cosplay         controllers.MainController.newCosplayPost()
+GET     /cosplays/:username         controllers.MainController.viewCosplays(username: String)
 
 GET     /new-cosgroup               controllers.MainController.newCosgroup()
 POST    /submit-new-cosgroup        controllers.MainController.newCosgroupPost()

@@ -3,7 +3,8 @@ package services
 import slick.lifted.Tag
 import slick.jdbc.PostgresProfile.api.*
 import repositories.*
-import models.User
+import services.*
+import models.{Cosplay, User}
 
 import scala.concurrent.Future
 import scala.concurrent.Await
@@ -19,6 +20,8 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class UsersRepositoryService @Inject(
     @NamedDatabase("cosgroups") val dbConfigProvider: DatabaseConfigProvider
+)(
+    cosplaysRepositoryService: CosplaysRepositoryService
 )(implicit ec: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
 
     import profile.api._
@@ -46,6 +49,60 @@ class UsersRepositoryService @Inject(
     def returnAllUsers(): Future[Seq[UsersRepositoryModel]] = {
         db.run(usersTable.result)
     }
+
+    def returnUserWithCosplaysById(id: Long): Future[Option[User]] = {
+        for {
+            repoUser        <- returnUserById(id)
+            repoCosplays    <- cosplaysRepositoryService.returnCosplaysByUserId(id)
+        } yield {
+            repoUser match {
+                case Some(user) => {
+                    val cosplays = repoCosplays.map { cosplay => (Cosplay.fromRepo(cosplay)) }
+                    Some(User.fromRepo(user, cosplays))
+                }
+                case None => {
+                    None
+                }
+            }
+        }
+    }
+
+    def returnUserWithCosplaysByUsername(username: String): Future[Option[User]] = {
+        for {
+            repoUser        <- returnUserByUsername(username)
+            repoCosplays    <- cosplaysRepositoryService.returnCosplaysByUserId(repoUser.get.id)
+        } yield {
+            repoUser match {
+                case Some(user) => {
+                    val cosplays = repoCosplays.map { cosplay => (Cosplay.fromRepo(cosplay)) }
+                    Some(User.fromRepo(user, cosplays))
+                }
+                case None => {
+                    None
+                }
+            }
+        }
+    }
+
+// {
+//     def toCosplay: Cosplay = {
+//         UsersRepositoryService.returnUserById(cosplayer).map { user => 
+            
+//         }
+//         Cosplay(
+//             id                  = id,
+//             characterName       = characterName,
+//             cosplayer           = ,
+//             seriesName          = seriesName,
+//             started             = started,
+//             completed           = completed,
+//             description         = description,
+//             budget              = budget,
+//             cosplayComponents   = cosplayComponents
+//         )
+//     }
+// } <- can we do an implicit conversion of [T]RepositoryModel -> [T]?
+
 
     def returnUserById(id: Long): Future[Option[UsersRepositoryModel]] = {
         db.run(usersTable.filter(_.id === id).result.headOption)

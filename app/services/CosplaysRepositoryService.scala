@@ -53,8 +53,8 @@ class CosplaysRepositoryService @Inject(
         db.run(cosplaysTable.filter(_.id === id).result.headOption)
     }
 
-    def returnCosplaysByCosplayerId(cosplayerId: Long): Future[Option[CosplaysRepositoryModel]] = {
-        db.run(cosplaysTable.filter(_.cosplayer === cosplayerId).result.headOption)
+    def returnCosplaysByUserId(userId: Long): Future[Seq[CosplaysRepositoryModel]] = {
+        db.run(cosplaysTable.filter(_.cosplayer === userId).result)
     }
 
     def updateCosplay(updatedCosplay: CosplaysRepositoryModel): Future[Int] = {
