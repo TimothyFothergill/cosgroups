@@ -226,11 +226,39 @@ class MainController @Inject(
     }
   }
 
+  def viewProfile(username: String) = Action.async { implicit request: MessagesRequest[AnyContent] => 
+    usersRepositoryService.returnUserWithCosplaysByUsername(username).map { maybeUser =>
+      maybeUser match {
+        case Some(userModel) => {
+            Ok(views.html.pages.Profile(userModel))
+        }
+        case None => {
+          println("No user found")
+          Redirect(routes.MainController.index())
+        }
+      }
+    }
+  }
+
   def viewCosplays(username: String) = Action.async { implicit request: MessagesRequest[AnyContent] => 
     usersRepositoryService.returnUserWithCosplaysByUsername(username).map { maybeUser =>
       maybeUser match {
         case Some(userModel) => {
             Ok(views.html.pages.ViewCosplays(userModel))
+        }
+        case None => {
+          println("No user found")
+          Redirect(routes.MainController.index())
+        }
+      }
+    }
+  }
+
+  def viewCosgroups(username: String) = Action.async { implicit request: MessagesRequest[AnyContent] => 
+    usersRepositoryService.returnUserWithCosplaysByUsername(username).map { maybeUser =>
+      maybeUser match {
+        case Some(userModel) => {
+            Ok(views.html.pages.ViewCosgroups(userModel))
         }
         case None => {
           println("No user found")

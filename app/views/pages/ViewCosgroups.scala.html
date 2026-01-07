@@ -1,0 +1,28 @@
+@import play.api.data.*
+@import play.api.data.Forms.*
+
+@(user: User)(implicit request: Request[_], messages: MessagesProvider)
+
+@Main("My Cosgroups | Cosgroups") {
+
+    <h1>@user.username's Cosgroups</h1>
+    <div class="user-cosgroups">
+        @{user.cosgroups.map { cosgroup =>
+            <div class="user-cosgroup">
+                <a href="routes.MainController.viewCosgroups(cosgroup.name)"><h2>{cosgroup.name}</h2></a>
+                <p>created: {cosgroup.created}<br />
+                archived: {cosgroup.archived}<br />
+                description: {cosgroup.description.get.take(100)}<br />
+                members: {
+                    cosgroup.members.map { member => 
+                        val url = routes.MainController.viewProfile(member.username)
+                        <a href="{url}">{member.username}</a>
+                    }
+                }
+                {if(cosgroup.members.length < 1) { <pre>,</pre> }}<br />
+                nextEvents: {cosgroup.nextEvents}<br />
+                previousEvents: {cosgroup.previousEvents}</p>
+            </div>
+        }}
+    </div>
+}

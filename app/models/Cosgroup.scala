@@ -28,15 +28,16 @@ object Cosgroup {
             archived        =   cosgroupsRepositoryModel.archived,
             description     =   cosgroupsRepositoryModel.description,
             members         =   members,
-            nextEvents      =   Seq(), // Same here, we'll need to get the ids of events and convert them into event objects..?
-            previousEvents  =   Seq() // Same here, we'll need to get the ids of events and convert them into event objects..?
+            nextEvents      =   Seq(), // This comes along later
+            previousEvents  =   Seq() // This comes along later
         )
     }
 
     def fromRepo(
-        cosgroupsRepositoryModels: Seq[CosgroupsRepositoryModel]
+        cosgroupsRepositoryModels: Seq[CosgroupsRepositoryModel],
+        members: Seq[User]
     ): Seq[Cosgroup] = {
-        cosgroupsRepositoryModels.map(fromRepo)
+        cosgroupsRepositoryModels.map(cosgroupsRepositoryModel => fromRepo(cosgroupsRepositoryModel, members))
     }
 
     def toRepo(cosgroup: Cosgroup): CosgroupsRepositoryModel = {
@@ -47,9 +48,9 @@ object Cosgroup {
             archived        =   cosgroup.archived,
             description     =   cosgroup.description,
             admin           =   cosgroup.members.head.id,
-            members         =   cosgroup.members.map(_.id), // Interesting one... We'll need to get the id for members and convert them into user objects?
-            nextEvents      =   Seq(), // Same here, we'll need to get the ids of events and convert them into event objects..?
-            previousEvents  =   Seq() // Same here, we'll need to get the ids of events and convert them into event objects..?
+            members         =   cosgroup.members.map(_.id),
+            nextEvents      =   Seq(), // This comes along later
+            previousEvents  =   Seq() // This comes along later
         )
     }
 

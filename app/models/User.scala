@@ -1,8 +1,8 @@
 package models
 
-import repositories.{CosplaysRepositoryModel, UsersRepositoryModel}
+import repositories.{CosplaysRepositoryModel, CosgroupsRepositoryModel, UsersRepositoryModel}
 import models.Password
-import utility.{Mapping, MultiMappingWithSeq}
+import utility.{Mapping, ManyMappingWithSeq}
 
 import java.time.LocalDate
 
@@ -53,10 +53,18 @@ object User {
         )
     }
 
-  implicit val repoToUser: MultiMappingWithSeq[UsersRepositoryModel, CosplaysRepositoryModel, CosgroupsRepositoryModel, User] =
-    new MultiMappingWithSeq[UsersRepositoryModel, CosplaysRepositoryModel, CosgroupsRepositoryModel, User] {
-      def map(repo: UsersRepositoryModel, cosplays: Seq[CosplaysRepositoryModel], cosgroups: Seq[CosgroupsRepositoryModel]): User =
-        fromRepo(repo, Cosplay.fromRepo(cosplays), Cosgroup.fromRepo(cosgroups))
+  implicit val repoToUser: ManyMappingWithSeq[UsersRepositoryModel, CosplaysRepositoryModel, CosgroupsRepositoryModel, User] =
+    new ManyMappingWithSeq[UsersRepositoryModel, CosplaysRepositoryModel, CosgroupsRepositoryModel, User] {
+      def map(
+        repoUserModel: UsersRepositoryModel, 
+        cosplays: Seq[CosplaysRepositoryModel], 
+        cosgroups: Seq[CosgroupsRepositoryModel]
+      ): User =
+        fromRepo(
+          repoUserModel, 
+          Cosplay.fromRepo(cosplays), 
+          Cosgroup.fromRepo(cosgroups, Seq()) // this isn't right yet... how are we getting these Cosgroups filled?
+        )
     }
 
   implicit val userToRepo: Mapping[User, UsersRepositoryModel] =

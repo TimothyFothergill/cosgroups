@@ -54,6 +54,10 @@ class CosgroupsRepositoryService @Inject(
         db.run(cosgroupsTable.filter(_.id === id).result.headOption)
     }
 
+    def returnCosgroupsByUserId(id: Long): Future[Seq[CosgroupsRepositoryModel]] = {
+        db.run(cosgroupsTable.result).map(_.filter(_.members.contains(id)))
+    }
+
     def returnCosgroupByAdminId(cosgroupId: Long): Future[Option[CosgroupsRepositoryModel]] = {
         db.run(cosgroupsTable.filter(_.admin === cosgroupId).result.headOption)
     }
