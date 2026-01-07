@@ -4,7 +4,8 @@ import java.time.LocalDate
 import slick.lifted.Tag
 import slick.jdbc.PostgresProfile.api.*
 
-import models.{User, CosplayComponent}
+import models.{Cosplay, CosplayComponent, User}
+import services.UsersRepositoryService
 import utility.JsonColumnTypes.*
 import java.util.Currency
 import play.api.libs.json.JsValue

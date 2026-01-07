@@ -8,7 +8,8 @@
     <a href="@routes.MainController.newCosgroup()"><p>Create new Cosgroup</p></a>
     <a href="@routes.MainController.newCosplay()"><p>Create new Cosplay</p></a>
     <hr>
-    <a href="@routes.MainController.index()"><p>View Cosgroups</p></a>
+    <a href="@routes.MainController.viewCosgroups(user.username)"><p>View Cosgroups</p></a>
+    <a href="@routes.MainController.viewCosplays(user.username)"><p>View Cosplays</p></a>
     <a href="@routes.MainController.index()"><p>View Events</p></a>
     <hr>
 }

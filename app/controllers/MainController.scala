@@ -6,7 +6,7 @@ import play.api.*
 import play.api.mvc.*
 
 import actions.*
-import models.{Password,User}
+import models.{Cosplay, Password, User}
 import models.forms.*
 import repositories.*
 import services.{CosgroupsRepositoryService, CosplaysRepositoryService, UsersService, UsersRepositoryService}
@@ -226,6 +226,48 @@ class MainController @Inject(
     }
   }
 
+  def viewProfile(username: String) = Action.async { implicit request: MessagesRequest[AnyContent] => 
+    usersRepositoryService.returnUserWithCosplaysByUsername(username).map { maybeUser =>
+      maybeUser match {
+        case Some(userModel) => {
+            Ok(views.html.pages.Profile(userModel))
+        }
+        case None => {
+          println("No user found")
+          Redirect(routes.MainController.index())
+        }
+      }
+    }
+  }
+
+  def viewCosplays(username: String) = Action.async { implicit request: MessagesRequest[AnyContent] => 
+    usersRepositoryService.returnUserWithCosplaysByUsername(username).map { maybeUser =>
+      maybeUser match {
+        case Some(userModel) => {
+            Ok(views.html.pages.ViewCosplays(userModel))
+        }
+        case None => {
+          println("No user found")
+          Redirect(routes.MainController.index())
+        }
+      }
+    }
+  }
+
+  def viewCosgroups(username: String) = Action.async { implicit request: MessagesRequest[AnyContent] => 
+    usersRepositoryService.returnUserWithCosplaysByUsername(username).map { maybeUser =>
+      maybeUser match {
+        case Some(userModel) => {
+            Ok(views.html.pages.ViewCosgroups(userModel))
+        }
+        case None => {
+          println("No user found")
+          Redirect(routes.MainController.index())
+        }
+      }
+    }
+  }
+
   def newCosgroup() = Action { implicit request: MessagesRequest[AnyContent] =>
     val boundForm = CosgroupForm.cosgroupForm
     Ok(views.html.pages.NewCosgroup(boundForm))
@@ -238,11 +280,9 @@ class MainController @Inject(
         println(boundForm)
         boundForm.fold(
           formWithErrors => {
-            println("Bad request.")
             Future.successful(BadRequest(views.html.pages.NewCosgroup(formWithErrors)))
           },
           newCosgroupData => {
-            println("Successfully submitted cosgroup data...")
             usersRepositoryService.returnUserByUsername(name).map { user =>
               val currentUser = user.get
                 val newCosgroupInsertModel = CosgroupsRepositoryInsertModel(

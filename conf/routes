@@ -21,11 +21,15 @@ GET     /dropuser                   controllers.MainController.dropUserPage()
 POST    /login                      controllers.MainController.loginPost()
 POST    /register                   controllers.MainController.registerPost()
 
-GET     /new-cosplay                controllers.MainController.newCosplay()
-POST    /submit-new-cosplay         controllers.MainController.newCosplayPost()
-
 GET     /new-cosgroup               controllers.MainController.newCosgroup()
-POST    /submit-new-cosgroup        controllers.MainController.newCosgroupPost()
+GET     /new-cosplay                controllers.MainController.newCosplay()
+
+GET     /:username                  controllers.MainController.viewProfile(username: String)
+GET     /:username/cosgroups        controllers.MainController.viewCosgroups(username: String)
+GET     /:username/cosplays         controllers.MainController.viewCosplays(username: String)
+
+POST    /new-cosgroup        controllers.MainController.newCosgroupPost()
+POST    /new-cosplay         controllers.MainController.newCosplayPost()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
