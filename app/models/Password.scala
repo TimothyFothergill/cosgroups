@@ -10,7 +10,7 @@ case class Password(
 object Password {
     private val costFactor: Int = 12
 
-    private val Pepper: String = sys.env.getOrElse("COSGROUPS_DB_PEPPER", 
+    private lazy val Pepper: String = sys.env.getOrElse("COSGROUPS_DB_PEPPER",
         throw new RuntimeException("Environment variable COSGROUPS_DB_PEPPER not set.")
     )
 

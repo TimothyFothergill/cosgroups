@@ -16,6 +16,7 @@ libraryDependencies ++= Seq(
   "org.playframework" %% "play-slick"               % "6.2.0",
   "org.playframework" %% "play-slick-evolutions"    % "6.2.0"
 )
+libraryDependencies += "org.scalatestplus" %% "mockito-3-4" % "3.2.10.0" % Test
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.timlah.controllers._"
