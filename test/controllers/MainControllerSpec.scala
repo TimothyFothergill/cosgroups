@@ -4,26 +4,24 @@ import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.test._
 import play.api.test.Helpers._
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import scala.concurrent.Future
 
-/**
- * Add your spec here.
- * You can mock out a whole application including requests, plugins etc.
- *
- * For more information, see https://www.playframework.com/documentation/latest/ScalaTestingWithScalaTest
- */
-class MainControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting {
+import services.{CosgroupsRepositoryService, CosplaysRepositoryService, UsersService, UsersRepositoryService}
+import actions.UserAction
+import models.{Password, User}
+
+class MainControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting with MockitoSugar {
+
+  private val mockUsersService: UsersService = {
+    val mocked = mock[UsersService]
+    when(mocked.lookupUserByUsername("cosplayer"))
+      .thenReturn(Future.successful(Some(User(1, "cosplayer", "cosplayer@timlahs.tests.com", Password("~testPassword123~")))))
+    mocked
+  }
 
   "MainController GET" should {
-
-    "render the index page from a new instance of controller" in {
-      val controller = new MainController(stubControllerComponents())
-      val home = controller.index().apply(FakeRequest(GET, "/"))
-
-      status(home) mustBe OK
-      contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Cosgroups")
-    }
-
     "render the index page from the application" in {
       val controller = inject[MainController]
       val home = controller.index().apply(FakeRequest(GET, "/"))
