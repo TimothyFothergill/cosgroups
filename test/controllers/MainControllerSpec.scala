@@ -2,7 +2,11 @@ package controllers
 
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
+import play.api.Application
+import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.inject.bind
 import play.api.test._
+import play.api.test.CSRFTokenHelper._
 import play.api.test.Helpers._
 import org.scalatestplus.mockito.MockitoSugar
 import org.mockito.Mockito.when
@@ -12,7 +16,7 @@ import services.{CosgroupsRepositoryService, CosplaysRepositoryService, UsersSer
 import actions.UserAction
 import models.{Password, User}
 
-class MainControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting with MockitoSugar {
+class MainControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting with MockitoSugar with BaseControllerSpec {
 
   private val mockUsersService: UsersService = {
     val mocked = mock[UsersService]
@@ -60,7 +64,7 @@ class MainControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
 
     "render the login page from the application" in {
       val controller = inject[MainController]
-      val home = controller.login().apply(FakeRequest(GET, "/login"))
+      val home = controller.login().apply(FakeRequest(GET, "/login").withCSRFToken)
 
       status(home) mustBe OK
       contentType(home) mustBe Some("text/html")
@@ -68,7 +72,7 @@ class MainControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
     }
 
     "render the login page from the router" in {
-      val request = FakeRequest(GET, "/login")
+      val request = FakeRequest(GET, "/login").withCSRFToken
       val home = route(app, request).get
 
       status(home) mustBe OK
