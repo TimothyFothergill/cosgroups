@@ -7,22 +7,25 @@
 
     <h1>@user.username's Cosgroups</h1>
     <div class="user-cosgroups">
-        @{user.cosgroups.map { cosgroup =>
+        @for(cosgroup <- user.cosgroups) {
             <div class="user-cosgroup">
-                <a href="routes.MainController.viewCosgroups(cosgroup.name)"><h2>{cosgroup.name}</h2></a>
-                <p>created: {cosgroup.created}<br />
-                archived: {cosgroup.archived}<br />
-                description: {cosgroup.description.get.take(100)}<br />
-                members: {
-                    cosgroup.members.map { member => 
-                        val url = routes.MainController.viewProfile(member.username)
-                        <a href="{url}">{member.username}</a>
+                <a href="@routes.MainController.viewCosgroups(cosgroup.name)"><h2>@cosgroup.name</h2></a>
+                <p>created: @cosgroup.created<br />
+                    @if(cosgroup.archived) {
+                        archived: @cosgroup.archived<br />
                     }
-                }
-                {if(cosgroup.members.length < 1) { <pre>,</pre> }}<br />
-                nextEvents: {cosgroup.nextEvents}<br />
-                previousEvents: {cosgroup.previousEvents}</p>
+                description: @cosgroup.description.map(_.take(100)).getOrElse("")<br />
+                members:
+                    @if(cosgroup.members.nonEmpty) {
+                        @for(member <- cosgroup.members) {
+                            <a href="@routes.MainController.viewProfile(member.username)">@member.username</a>
+                        }
+                    } else {
+                        <pre>,</pre>
+                    }<br />
+                nextEvents: @cosgroup.nextEvents<br />
+                previousEvents: @cosgroup.previousEvents</p>
             </div>
-        }}
+        }
     </div>
 }

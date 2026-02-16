@@ -28,6 +28,8 @@ GET     /:username                  controllers.MainController.viewProfile(usern
 GET     /:username/cosgroups        controllers.MainController.viewCosgroups(username: String)
 GET     /:username/cosplays         controllers.MainController.viewCosplays(username: String)
 
+GET     /:username/:cosplayId         controllers.MainController.viewCosplay(username: String, cosplayId: Long)
+
 POST    /new-cosgroup        controllers.MainController.newCosgroupPost()
 POST    /new-cosplay         controllers.MainController.newCosplayPost()
 
