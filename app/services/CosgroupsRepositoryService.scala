@@ -50,7 +50,7 @@ class CosgroupsRepositoryService @Inject(
         db.run(cosgroupsTable.result)
     }
 
-    def returnCosgroupsById(id: Long): Future[Option[CosgroupsRepositoryModel]] = {
+    def returnCosgroupById(id: Long): Future[Option[CosgroupsRepositoryModel]] = {
         db.run(cosgroupsTable.filter(_.id === id).result.headOption)
     }
 

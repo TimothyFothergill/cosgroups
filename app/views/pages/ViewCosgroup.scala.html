@@ -1,0 +1,42 @@
+@import play.api.data.*
+@import play.api.data.Forms.*
+
+@(cosgroup: Cosgroup)(implicit request: Request[_], messages: MessagesProvider)
+
+@import helper.*
+
+@Main("@cosgroup.name | Cosgroups") {
+    <div class="cosgroup">
+        <h1>@cosgroup.name</h1>
+        @if(cosgroup.members.nonEmpty) {
+            <h4>Admin: @cosgroup.members.headOption.get.username</h4>
+        }
+        <div class="user-cosplay-character">
+            <p>@cosgroup.created</p>
+            <p>@cosgroup.archived</p>
+            <p>@cosgroup.description</p>
+            <div class="cosgroup-user-list">
+                Members:
+                    @for(user <- cosgroup.members) { @* this is empty atm due to how we convert from repository to domain model *@
+                        <p>@user.username</p>
+                    }
+            </div>
+            @if(cosgroup.nextEvents.nonEmpty) {
+                <div class="cosgroup-next-events-list">
+                    Upcoming events:
+                        @for(event <- cosgroup.nextEvents) {
+                            <p>@event.name</p>
+                        }
+                </div>
+            }
+            @if(cosgroup.previousEvents.nonEmpty) {
+                <div class="cosgroup-previous-events-list">
+                    Previous events:
+                        @for(event <- cosgroup.previousEvents) {
+                            <p>@event.name</p>
+                        }
+                </div>
+            }
+        </div>
+    </div>
+}
