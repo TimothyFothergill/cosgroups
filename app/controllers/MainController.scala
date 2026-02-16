@@ -6,7 +6,7 @@ import play.api.*
 import play.api.mvc.*
 
 import actions.*
-import models.{Cosplay, Password, User}
+import models.{Cosgroup, Cosplay, Password, User}
 import models.forms.*
 import repositories.*
 import services.{CosgroupsRepositoryService, CosplaysRepositoryService, UsersService, UsersRepositoryService}
@@ -284,6 +284,19 @@ class MainController @Inject(
           Redirect(routes.MainController.index())
         }
       }
+    }
+  }
+
+  def viewCosgroup(cosgroupId: Long) = Action.async { implicit request: MessagesRequest[AnyContent] => 
+    cosgroupsRepositoryService.returnCosgroupById(cosgroupId).flatMap {
+      case Some(cosgroupRepo) =>
+        val cosgroup = Cosgroup.fromRepo(cosgroupRepo)
+        Future(Ok(views.html.pages.ViewCosgroup(cosgroup)))
+      case None =>
+        Future.successful {
+          println("No cosgroup found")
+          Redirect(routes.MainController.index())
+        }
     }
   }
 

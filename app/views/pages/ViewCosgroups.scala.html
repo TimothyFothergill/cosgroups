@@ -9,7 +9,7 @@
     <div class="user-cosgroups">
         @for(cosgroup <- user.cosgroups) {
             <div class="user-cosgroup">
-                <a href="@routes.MainController.viewCosgroups(cosgroup.name)"><h2>@cosgroup.name</h2></a>
+                <a href="@routes.MainController.viewCosgroup(cosgroup.id)"><h2>@cosgroup.name</h2></a>
                 <p>created: @cosgroup.created<br />
                     @if(cosgroup.archived) {
                         archived: @cosgroup.archived<br />
