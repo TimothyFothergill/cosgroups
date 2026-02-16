@@ -1,8 +1,18 @@
 package controllers
 
-trait BaseControllerSpec {
-    System.setProperty("APP_SECRET_KEY", "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")
-    System.setProperty("JDBC_DATABASE_URL", "jdbc:postgresql://localhost:5432/test")
-    System.setProperty("JDBC_DATABASE_USERNAME", "test")
-    System.setProperty("JDBC_DATABASE_PASSWORD", "testpass")
+import org.scalatest._
+import org.scalatestplus.play._
+import org.scalatestplus.play.guice.GuiceOneAppPerTest
+import play.api.{Play, Application}
+import play.api.inject.guice._
+
+class BaseControllerSpec extends PlaySpec with GuiceOneAppPerTest {
+    override def fakeApplication() = 
+        new GuiceApplicationBuilder().configure(
+            "play.http.secret.key" -> "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+            "db.default.url" -> "jdbc:postgresql://localhost:5432/test",
+            "db.default.username" -> "test",
+            "db.default.password" -> "testpass"
+        )
+        .build()
 }

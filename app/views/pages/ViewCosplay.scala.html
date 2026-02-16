@@ -1,0 +1,25 @@
+@import play.api.data.*
+@import play.api.data.Forms.*
+
+@(cosplay: Cosplay, user: User)(implicit request: Request[_], messages: MessagesProvider)
+
+@import helper.*
+
+@Main("@cosplay.characterName | @user.username | Cosgroups") {
+    <div class="user-cosplay">
+        <h1>@cosplay.characterName</h1>
+        <h4>By @user.username</h4>
+        <div class="user-cosplay-character">
+            <p>@cosplay.seriesName</p>
+            <p>@cosplay.started</p>
+            <p>@cosplay.status</p>
+            <p>@cosplay.completed</p>
+            <p>@cosplay.archived</p>
+            <p>@cosplay.description</p>
+            <p>@cosplay.budget</p>
+            @for(component <- cosplay.cosplayComponents) {
+                <p>@component</p>
+            }
+        </div>
+    </div>
+}

@@ -8,11 +8,11 @@
 @Main("My Cosplays | Cosgroups") {
     <h1>@{user.username}'s Cosplays</h1>
     <div class="user-cosplays">
-        @{user.cosplays.map { cosplay =>
+        @for(cosplay <- user.cosplays) {
             <div class="user-cosplays-character">
-                <h2>{cosplay.characterName}</h2>
+                <a href="@routes.MainController.viewCosplay(user.username, cosplay.id)"><h2>@cosplay.characterName</h2></a>
                 <p>other cosplay info...</p>
             </div>
-        }}
+        }
     </div>
 }

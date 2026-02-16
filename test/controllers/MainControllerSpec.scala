@@ -1,9 +1,7 @@
 package controllers
 
 import org.scalatestplus.play._
-import org.scalatestplus.play.guice._
 import play.api.Application
-import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.bind
 import play.api.test._
 import play.api.test.CSRFTokenHelper._
@@ -16,7 +14,7 @@ import services.{CosgroupsRepositoryService, CosplaysRepositoryService, UsersSer
 import actions.UserAction
 import models.{Password, User}
 
-class MainControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting with MockitoSugar with BaseControllerSpec {
+class MainControllerSpec extends BaseControllerSpec with Injecting with MockitoSugar {
 
   private val mockUsersService: UsersService = {
     val mocked = mock[UsersService]

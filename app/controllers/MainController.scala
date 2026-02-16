@@ -254,6 +254,25 @@ class MainController @Inject(
     }
   }
 
+  def viewCosplay(username: String, cosplayId: Long) = Action.async { implicit request: MessagesRequest[AnyContent] => 
+    cosplaysRepositoryService.returnCosplaysById(cosplayId).flatMap {
+      case Some(cosplayRepo) =>
+        val cosplay = Cosplay.fromRepo(cosplayRepo)
+        usersRepositoryService.returnUserWithCosplaysById(cosplay.cosplayerId).map {
+          case Some(user) =>
+            Ok(views.html.pages.ViewCosplay(cosplay, user))
+          case None =>
+            println("No user found")
+            Redirect(routes.MainController.index())
+        }
+      case None =>
+        Future.successful {
+          println("No cosplay found")
+          Redirect(routes.MainController.index())
+        }
+    }
+  }
+
   def viewCosgroups(username: String) = Action.async { implicit request: MessagesRequest[AnyContent] => 
     usersRepositoryService.returnUserWithCosplaysByUsername(username).map { maybeUser =>
       maybeUser match {
