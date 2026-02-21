@@ -4,6 +4,7 @@
 html {
     height: 100%;
     box-sizing: border-box;
+    background-color: #f1e6c9;
 }
 body {
     height: 100%;
@@ -13,29 +14,8 @@ body {
 .page-body {
     min-height: 100vh;
 }
-#page-container {
+/* #page-container {
     min-height: 100%;
     display: grid;
     grid-template-rows: auto 1fr auto;
-}
-h1 {
-    color: blue;
-}
-h2 {
-    color: green;
-}
-h3 {
-    color: orangered;
-}
-h4 {
-    color: purple;
-}
-h5 {
-    color: teal;
-}
-
-.content {
-    padding: 2.5% 2.5%;
-    margin: 1% 1%;
-    border: 2px black solid;
-}
+} */

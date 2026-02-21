@@ -1,0 +1,16 @@
+.index-hero-section {
+    background-image: none;
+    min-width: 100%;
+    background-color: #6d026f;
+    color: #fff;
+    background-image: linear-gradient(to bottom, #6d026f, #f1e6c9);
+}
+
+.index-hero-section a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.sub-section {
+    display: inline;
+}

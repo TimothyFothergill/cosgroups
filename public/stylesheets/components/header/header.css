@@ -5,8 +5,10 @@
 }
 
 .logo a {
-    font-size: 2em;
+    font-size: 3em;
+    font-weight: 800;
     text-decoration: none;
+    color: #6e026f;
 }
 
 .header-nav-list {
