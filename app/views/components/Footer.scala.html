@@ -1,5 +1,32 @@
 @()
-<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/components/footer/footer.css")">
-<div class="footer">
-    <p>2025 Timlah did this</p>
-</div>
+
+<footer class="footer text-center row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-3 border-top">
+    <div class="col mb-3">
+      <ul class="nav flex-column">
+        <p class="footer-section">Cosgroups © 2026</p>
+      </ul>
+    </div>
+    <div class="col mb-3">
+      <h5 class="footer-section">Main Navigation</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="@routes.MainController.index()" class="nav-link p-0">Home</a></li>
+        <li class="nav-item mb-2"><a href="@routes.MainController.about()" class="nav-link p-0">About</a></li>
+        <li class="nav-item mb-2"><a href="@routes.MainController.about()" class="nav-link p-0">Featured Cosplays</a></li>
+        <li class="nav-item mb-2"><a href="@routes.MainController.about()" class="nav-link p-0">Events</a></li>
+      </ul> 
+  </div>
+    <div class="col mb-3">
+      <h5 class="footer-section">Other stuff</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="https://www.timlah.com" class="nav-link p-0">Timlah's Techs</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Events</a></li>
+      </ul> 
+  </div>
+    <div class="col mb-3">
+      <h5 class="footer-section">Socials</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="https://tech.lgbt/@@timlah/" class="nav-link p-0"><i class="bi bi-mastodon"></i> Timlah on Mastodon</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0"><i class="bi bi-github"></i> GitHub</a></li>
+      </ul> 
+  </div>
+</footer>

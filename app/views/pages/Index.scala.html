@@ -1,6 +1,45 @@
 @()(implicit request: MessagesRequest[_])
 
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/pages/index.css")">
+
 @Main("Cosgroups") {
-  <h1>Cosgroups</h1>
-  <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque officia, quas ad suscipit, fugit quaerat eius voluptates quo asperiores voluptatibus perspiciatis possimus accusantium ut est beatae inventore tempore sunt ducimus.</p>
+  <div class="index-hero-section">
+      <img class="d-block mx-auto mb-4" src="@routes.Assets.versioned("images/giggle.webp")" alt="" width="72" height="72">
+      <h1 class="display-5 fw-bold text-body-emphasis">Cosgroups</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">Welcome to Cosgroups, where community and cosplay come together.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          <button type="button" class="btn btn-primary btn-lg px-4 gap-3">
+            <a href="@routes.MainController.login()">Login</a>
+          </button>
+          <button type="button" class="btn btn-primary btn-lg px-4">
+            <a href="@routes.MainController.register()" class="">Sign up</a>
+          </button>
+        </div>
+      </div>
+      <br>
+      <div class="container px-5">
+        <img src="/assets/images/background-anime-convention.jpg" class="img-fluid border rounded-3 mb-4" alt="Example image" width="700" height="500" loading="lazy">
+      </div>
+  </div>
+  <div class="py-5 my-3 text-center">
+    <h2>Create together, share together</h2>
+    <p>Cosplay is creative. Cosplay is social. Why not combine the two?</p>
+    <div class="sub-section">
+      <h3>Create</h3>
+      <p>Public and private pages for your cosplays, from creation to completion.</p>
+      <img style="border:2px black solid;" height="128px" width="128px" src="" />
+    </div>
+    <div class="sub-section">
+      <h3>Together</h3>
+      <p>Create a Cosgroup, track your friends progress and share your own in your Cosgroup.</p>
+      <img style="border:2px black solid;" height="128px" width="128px" src="" />
+    </div>
+    <div class="sub-section">
+      <h3>Forever</h3>
+      <p>Plan your events as a group, what cosplays you're taking and your budgets.</p>
+      <img style="border:2px black solid;" height="128px" width="128px" src="" />
+    </div>
+  </div>
+
 }
